@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.binary_winters.test_project.utils.IUserRoleHelper;
-import com.binary_winters.test_project.utils.UserRoleHelper;
+import com.binary_winters.test_project.utils.IUserRoleResponse;
+import com.binary_winters.test_project.utils.UserRoleResponse;
 
 @Service
 public class UserService {
@@ -19,17 +19,17 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public List<UserRoleHelper> getUserAndRolbyMatrix(String matrix, List<String> roles, String code) {
-		List<IUserRoleHelper> iuserRoleHelperResponse = null;
+	public List<UserRoleResponse> getUserAndRolbyMatrix(String matrix, List<String> roles, String code) {
+		List<IUserRoleResponse> iuserRoleHelperResponse = null;
 		if (code != null && roles != null) {
 			iuserRoleHelperResponse = userRepository.findUserAndRolesbyMatrixAndCode(matrix, code, roles);
 		} else if (code == null && roles != null) {
 			iuserRoleHelperResponse = userRepository.findUserAndRolesbyMatrix(matrix, roles);
 		}
 
-		List<UserRoleHelper> userRoleHelperResponse = 
+		List<UserRoleResponse> userRoleHelperResponse = 
 				iuserRoleHelperResponse.stream()
-				.map((IUserRoleHelper i) -> new UserRoleHelper(i.getId(), i.getMatrix(), i.getCode(), i.getName(), i.getAlias()))
+				.map((IUserRoleResponse i) -> new UserRoleResponse(i.getId(), i.getMatrix(), i.getCode(), i.getName(), i.getAlias()))
 				.distinct()
 				.collect(Collectors.toList());
 		

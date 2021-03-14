@@ -1,6 +1,6 @@
 package com.binary_winters.test_project.utils;
 
-public interface IUserRoleHelper {
+public interface IUserRoleResponse {
 
 	public Long getId();
 

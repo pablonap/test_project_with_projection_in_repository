@@ -1,6 +1,6 @@
 package com.binary_winters.test_project.utils;
 
-public class UserRoleHelper {
+public class UserRoleResponse {
 
 	private Long id;
 	private String matrix;
@@ -8,7 +8,7 @@ public class UserRoleHelper {
 	private String name;
 	private String alias;
 
-	public UserRoleHelper(Long id, String matrix, String code, String name, String alias) {
+	public UserRoleResponse(Long id, String matrix, String code, String name, String alias) {
 		this.id = id;
 		this.matrix = matrix;
 		this.code = code;
@@ -76,7 +76,7 @@ public class UserRoleHelper {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserRoleHelper other = (UserRoleHelper) obj;
+		UserRoleResponse other = (UserRoleResponse) obj;
 		if (alias == null) {
 			if (other.alias != null)
 				return false;
