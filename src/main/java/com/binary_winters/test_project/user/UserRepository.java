@@ -12,11 +12,11 @@ import com.binary_winters.test_project.utils.IUserRoleHelper;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-	@Query(value="select u.id, u.matrix, u.code, u.name, r.alias from user u inner join rol r on u.matrix = r.matrix "
+	@Query(value="select u.*, r.alias from user u inner join rol r on u.matrix = r.matrix "
 			+ "where u.matrix = :matrix and r.alias IN :roles", nativeQuery = true)
 	List<IUserRoleHelper> findUserAndRolesbyMatrix(@Param("matrix") String matrix, @Param("roles") List<String> roles);
 
-	@Query(value="select u.id, u.matrix, u.code, u.name, r.alias from user u inner join rol r on u.matrix = r.matrix "
+	@Query(value="select u.*, r.alias from user u inner join rol r on u.matrix = r.matrix "
 			+ "where u.matrix = :matrix and u.code = :code and r.alias IN :roles", nativeQuery = true)
 	List<IUserRoleHelper> findUserAndRolesbyMatrixAndCode(
 			@Param("matrix") String matrix, 
