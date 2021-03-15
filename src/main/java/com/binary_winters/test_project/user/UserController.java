@@ -25,6 +25,6 @@ public class UserController {
 			@PathVariable String matrix, 
 			@PathVariable List<String> roles,
 			@RequestParam(required=false) String code) {
-		return userService.getUserAndRolbyMatrix(matrix, roles, code);
+		return userService.getUsersWithTheirRoles(matrix, roles, code);
 	}
 }

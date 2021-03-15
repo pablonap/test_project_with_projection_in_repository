@@ -23,25 +23,37 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public List<UserRoleDto> getUserAndRolbyMatrix(String matrix, List<String> roles, String code) {
+	private List<IUserRoleResponse> findUserAndRolbyMatrix(String matrix, List<String> roles, String code) {
 		List<IUserRoleResponse> iuserRoleHelperResponse = null;
 		if (code != null && roles != null) {
 			iuserRoleHelperResponse = userRepository.findUserAndRolesbyMatrixAndCode(matrix, code, roles);
 		} else if (code == null && roles != null) {
 			iuserRoleHelperResponse = userRepository.findUserAndRolesbyMatrix(matrix, roles);
 		}
-
-		List<UserRoleResponse> userRoleResponseList = iuserRoleHelperResponse.stream()
-				.map((IUserRoleResponse i) -> new UserRoleResponse(
+		
+		return iuserRoleHelperResponse;
+	}
+	
+	private Map<UserWithoutRol, List<UserRoleResponse>> buildMapOfUsersWithTheirRoles(List<IUserRoleResponse> iuserRoleHelperResponse) {
+		List<UserRoleResponse> userRoleResponseList = iuserRoleHelperResponse.stream().map((IUserRoleResponse i) -> new UserRoleResponse(
 						new UserWithoutRol(i.getId(), i.getMatrix(), i.getCode(), i.getName()), i.getAlias()))
 				.distinct().collect(Collectors.toList());
 
 		Map<UserWithoutRol, List<UserRoleResponse>> mapOfUsers = userRoleResponseList.stream()
 				.collect(Collectors.groupingBy(UserRoleResponse::getUserWithoutRol));
+		
+		return mapOfUsers;
+	}
+		
+	public List<UserRoleDto> getUsersWithTheirRoles(String matrix, List<String> roles, String code){
+		
+		List<IUserRoleResponse> iuserRoleHelperResponse = this.findUserAndRolbyMatrix(matrix, roles, code);
+		
+		Map<UserWithoutRol, List<UserRoleResponse>> mapOfUsersWithTheirRoles = this.buildMapOfUsersWithTheirRoles(iuserRoleHelperResponse);
 
 		List<UserRoleDto> userRoleDtoResponse = new ArrayList<>();
 
-		for (Map.Entry<UserWithoutRol, List<UserRoleResponse>> entry : mapOfUsers.entrySet()) {
+		for (Map.Entry<UserWithoutRol, List<UserRoleResponse>> entry : mapOfUsersWithTheirRoles.entrySet()) {
 
 			UserWithoutRol userWithoutRol = entry.getKey();
 			List<UserRoleResponse> userRoleResponseValue = entry.getValue();
@@ -56,10 +68,8 @@ public class UserService {
 					userWithoutRol.getCode(), userWithoutRol.getName(), rolesFromMap);
 
 			userRoleDtoResponse.add(userRoleDto);
-
 		}
 
 		return userRoleDtoResponse;
 	}
-
 }
