@@ -37,7 +37,7 @@ public class UserService {
 	private Map<UserWithoutRol, List<UserRoleResponse>> buildMapOfUsersWithTheirRoles(List<IUserRoleResponse> iuserRoleHelperResponse) {
 		List<UserRoleResponse> userRoleResponseList = iuserRoleHelperResponse.stream().map((IUserRoleResponse i) -> new UserRoleResponse(
 						new UserWithoutRol(i.getId(), i.getMatrix(), i.getCode(), i.getName()), i.getAlias()))
-				.distinct().collect(Collectors.toList());
+				.collect(Collectors.toList());
 
 		Map<UserWithoutRol, List<UserRoleResponse>> mapOfUsers = userRoleResponseList.stream()
 				.collect(Collectors.groupingBy(UserRoleResponse::getUserWithoutRol));
