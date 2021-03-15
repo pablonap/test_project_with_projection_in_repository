@@ -2,6 +2,7 @@ package com.binary_winters.test_project.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.binary_winters.test_project.utils.IUserRoleResponse;
 import com.binary_winters.test_project.utils.UserRoleDto;
 import com.binary_winters.test_project.utils.UserRoleResponse;
+import com.binary_winters.test_project.utils.UserWithoutRol;
 
 @Service
 public class UserService {
@@ -30,50 +32,34 @@ public class UserService {
 		}
 
 		List<UserRoleResponse> userRoleResponseList = iuserRoleHelperResponse.stream()
-				.map((IUserRoleResponse i) -> new UserRoleResponse(i.getId(), i.getMatrix(), i.getCode(), i.getName(),
-						i.getAlias()))
+				.map((IUserRoleResponse i) -> new UserRoleResponse(
+						new UserWithoutRol(i.getId(), i.getMatrix(), i.getCode(), i.getName()), i.getAlias()))
 				.distinct().collect(Collectors.toList());
 
-		List<UserRoleDto> userRoleDtoList = new ArrayList<>();
+		Map<UserWithoutRol, List<UserRoleResponse>> mapOfUsers = userRoleResponseList.stream()
+				.collect(Collectors.groupingBy(UserRoleResponse::getUserWithoutRol));
 
-		for (int i = 0; i < userRoleResponseList.size(); i++) {
-			for (int j = i + 1; j < userRoleResponseList.size(); j++) {
-				if (userRoleResponseList.get(i).getMatrix().equals(userRoleResponseList.get(j).getMatrix())
-						&& userRoleResponseList.get(i).getCode().equals(userRoleResponseList.get(j).getCode())) {
+		List<UserRoleDto> userRoleDtoResponse = new ArrayList<>();
 
-					Long currentId = userRoleResponseList.get(i).getId();
-					String currentMatrix = userRoleResponseList.get(i).getMatrix();
-					String currentCode = userRoleResponseList.get(i).getCode();
-					String currentName = userRoleResponseList.get(i).getName();
-					String currentRol = userRoleResponseList.get(i).getAlias();
+		for (Map.Entry<UserWithoutRol, List<UserRoleResponse>> entry : mapOfUsers.entrySet()) {
 
-					if (userRoleDtoList.isEmpty()) {
-						List<String> listOfRoles = new ArrayList<String>();
-						listOfRoles.add(currentRol);
-						UserRoleDto user = new UserRoleDto(currentId, currentMatrix, currentCode, currentName,
-								listOfRoles);
-						userRoleDtoList.add(user);
-					} else {
-						for (UserRoleDto u : userRoleDtoList) {
-							if ((u.getMatrix().equals(currentMatrix) && u.getCode().equals(currentCode))) {
-								if (u.getAlias().contains(currentRol) == false) {
-									u.getAlias().add(currentRol);
-								}
-							} else {
-								List<String> listOfRoles = new ArrayList<String>();
-								listOfRoles.add(currentRol);
-								UserRoleDto user = new UserRoleDto(currentId, currentMatrix, currentCode, currentName,
-										listOfRoles);
-								userRoleDtoList.add(user);
-							}
-						}
-					}
+			UserWithoutRol userWithoutRol = entry.getKey();
+			List<UserRoleResponse> userRoleResponseValue = entry.getValue();
 
-				}
+			List<String> rolesFromMap = new ArrayList<>();
+
+			for (UserRoleResponse user : userRoleResponseValue) {
+				rolesFromMap.add(user.getAlias());
 			}
+
+			UserRoleDto userRoleDto = new UserRoleDto(userWithoutRol.getId(), userWithoutRol.getMatrix(),
+					userWithoutRol.getCode(), userWithoutRol.getName(), rolesFromMap);
+
+			userRoleDtoResponse.add(userRoleDto);
+
 		}
 
-		return userRoleDtoList;
+		return userRoleDtoResponse;
 	}
 
 }
