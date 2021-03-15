@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 			+ "where u.ADM_MATRIZ = :matrix and r.ROL_ID IN :roles", nativeQuery = true)
 	List<IUserRoleResponse> findUserAndRolesbyMatrix(@Param("matrix") String matrix, @Param("roles") List<String> roles);
 
-	@Query(value="select u.*, r.ROL_ID from user u inner join rol r on u.ADM_MATRIZ = r.ADM_MATRIZ "
+	@Query(value="select distinct u.*, r.ROL_ID from user u inner join rol r on u.ADM_MATRIZ = r.ADM_MATRIZ "
 			+ "where u.ADM_MATRIZ = :matrix and u.code = :code and r.ROL_ID IN :roles", nativeQuery = true)
 	List<IUserRoleResponse> findUserAndRolesbyMatrixAndCode(
 			@Param("matrix") String matrix, 
