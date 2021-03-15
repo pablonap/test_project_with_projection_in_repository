@@ -8,14 +8,14 @@ public class UserRoleDto {
 	private String matrix;
 	private String code;
 	private String name;
-	private List<String> alias;
+	private List<String> roleId;
 
-	public UserRoleDto(Long id, String matrix, String code, String name, List<String> alias) {
+	public UserRoleDto(Long id, String matrix, String code, String name, List<String> roleId) {
 		this.id = id;
 		this.matrix = matrix;
 		this.code = code;
 		this.name = name;
-		this.alias = alias;
+		this.roleId = roleId;
 	}
 
 	public Long getId() {
@@ -50,12 +50,12 @@ public class UserRoleDto {
 		this.name = name;
 	}
 
-	public List<String> getAlias() {
-		return alias;
+	public List<String> getRoleId() {
+		return roleId;
 	}
 
-	public void setAlias(List<String> alias) {
-		this.alias = alias;
+	public void setRoleId(List<String> roleId) {
+		this.roleId = roleId;
 	}
 
 }

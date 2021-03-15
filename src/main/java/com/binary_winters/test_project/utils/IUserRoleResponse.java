@@ -4,12 +4,12 @@ public interface IUserRoleResponse {
 
 	public Long getId();
 
-	public String getMatrix();
+	public String getAdm_matriz();
 
 	public String getCode();
 
 	public String getName();
 
-	public String getAlias();
+	public String getRol_id();
 
 }

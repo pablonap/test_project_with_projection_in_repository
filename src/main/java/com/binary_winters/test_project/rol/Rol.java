@@ -1,5 +1,6 @@
 package com.binary_winters.test_project.rol;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,18 +13,20 @@ public class Rol {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long roleid;
+	private Long id;
 
+	@Column(name="ADM_MATRIZ")
 	private String matrix;
 	
-	private String alias;
+	@Column(name="ROL_ID")
+	private String roleId;
 
 	private String code;
 
-	public Rol(Long roleid, String matrix, String alias, String code) {
-		this.roleid = roleid;
+	public Rol(Long id, String matrix, String roleId, String code) {
+		this.id = id;
 		this.matrix = matrix;
-		this.alias = alias;
+		this.roleId = roleId;
 		this.code = code;
 	}
 	
@@ -38,24 +41,28 @@ public class Rol {
 		this.matrix = matrix;
 	}
 
-	public Long getId() {
-		return roleid;
-	}
-
-	public String getAlias() {
-		return alias;
-	}
-
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
-
 	public String getCode() {
 		return code;
 	}
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getRoleId() {
+		return roleId;
+	}
+
+	public void setRoleId(String roleId) {
+		this.roleId = roleId;
 	}
 	
 }

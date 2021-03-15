@@ -36,7 +36,7 @@ public class UserService {
 	
 	private Map<UserWithoutRol, List<UserRoleResponse>> buildMapOfUsersWithTheirRoles(List<IUserRoleResponse> iuserRoleHelperResponse) {
 		List<UserRoleResponse> userRoleResponseList = iuserRoleHelperResponse.stream().map((IUserRoleResponse i) -> new UserRoleResponse(
-						new UserWithoutRol(i.getId(), i.getMatrix(), i.getCode(), i.getName()), i.getAlias()))
+						new UserWithoutRol(i.getId(), i.getAdm_matriz(), i.getCode(), i.getName()), i.getRol_id()))
 				.collect(Collectors.toList());
 
 		Map<UserWithoutRol, List<UserRoleResponse>> mapOfUsers = userRoleResponseList.stream()
@@ -61,7 +61,7 @@ public class UserService {
 			List<String> rolesFromMap = new ArrayList<>();
 
 			for (UserRoleResponse user : userRoleResponseValue) {
-				rolesFromMap.add(user.getAlias());
+				rolesFromMap.add(user.getRoleId());
 			}
 
 			UserRoleDto userRoleDto = new UserRoleDto(userWithoutRol.getId(), userWithoutRol.getMatrix(),

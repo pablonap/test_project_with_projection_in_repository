@@ -1,5 +1,6 @@
 package com.binary_winters.test_project.user;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name="ADM_MATRIZ")
 	private String matrix;
 	private String code;
 	private String name;
