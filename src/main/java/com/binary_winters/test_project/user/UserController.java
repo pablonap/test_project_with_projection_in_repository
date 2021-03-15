@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.binary_winters.test_project.utils.UserRoleResponse;
+import com.binary_winters.test_project.utils.UserRoleDto;
 
 @RestController
 @RequestMapping("/api")
@@ -21,7 +21,7 @@ public class UserController {
 	// Postman example: http://localhost:8080/api/users/matrix/VN5557/roles/IDV_ROLE_ADMIN,IDV_VAL_3
 	// Postman example: http://localhost:8080/api/users/matrix/VN5557/roles/IDV_ROLE_ADMIN,IDV_VAL_3?code=MONICA1
 	@GetMapping("/users/matrix/{matrix}/roles/{roles}")
-	public List<UserRoleResponse> getUserAndRolbyMatrix(
+	public List<UserRoleDto> getUserAndRolbyMatrix(
 			@PathVariable String matrix, 
 			@PathVariable List<String> roles,
 			@RequestParam(required=false) String code) {
